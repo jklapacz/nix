@@ -52,6 +52,9 @@
         pkgs.neofetch
         pkgs.neovim
       ];
+
+      security.pam.enableSudoTouchIdAuth = true;
+
     };
   in
   {
