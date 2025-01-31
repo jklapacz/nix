@@ -13,7 +13,10 @@
   let
     configuration = { pkgs, ... }: {
       services.nix-daemon.enable = true;
-      nix.settings.experimental-features = "nix-command flakes";
+      nix.settings = {
+        experimental-features = "nix-command flakes";
+        ssl-cert-file = "/private/etc/nix/macos-keychain.crt";
+      };
 
       system.configurationRevision = self.rev or self.dirtyRev or null;
       system.stateVersion = 4;
