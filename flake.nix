@@ -2,6 +2,7 @@
   description = "Shadowfax system configuration";
 
   inputs = {
+    fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
@@ -13,7 +14,7 @@
     };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, fh, ... }:
   let
     configuration = { pkgs, ... }: {
       services.nix-daemon.enable = true;
@@ -53,15 +54,26 @@
 
       programs.zsh.enable = true;
       environment.systemPackages = [
+        pkgs.docker
         pkgs.neofetch
         pkgs.neovim
+	fh.packages.aarch64-darwin.default
       ];
+
+      launchd.user.agents.docker-desktop = {
+        serviceConfig = {
+	  ProgramArguments = [ "/Applications/Docker.app/Contents/MacOS/Docker Desktop.app/Contents/MacOS/Docker Desktop" ];
+	  KeepAlive = false;
+	  RunAtLoad = true;
+        };
+      };
 
       homebrew = {
         enable = true;
         brews = [ "cowsay" ];
         taps = [];
         casks = [
+	  "docker"
 	  "font-fira-code"
 	  "font-fira-mono"
 	  "font-fira-mono-for-powerline"
@@ -103,6 +115,22 @@
 	enableBashIntegration = true;
 	enableZshIntegration = true;
 	flags = [ "--disable-up-arrow" ];
+      };
+
+      programs.eza = {
+        enable = true;
+	enableZshIntegration = true;
+      };
+
+      programs.git = {
+        enable = true;
+	userName = "Jakub Klapacz";
+	userEmail = "jakub@gordiansoftware.com";
+	ignores = [ ".DS_STORE" ];
+	extraConfig = {
+	  init.defaultBranch = "main";
+	  push.autoSetupRemote = true;
+	};
       };
     };
   in
