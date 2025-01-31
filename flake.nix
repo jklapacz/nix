@@ -21,7 +21,7 @@
       # Replace with x86_64-darwin if on Intel Mac
       nixpkgs.hostPlatform = "aarch64-darwin";
 
-      users.users.$USER = {
+      users.users.jklapacz = {
         name = "jklapacz";
         home = "/Users/jklapacz";
       };
