@@ -48,7 +48,10 @@
       };
 
       programs.zsh.enable = true;
-      environment.systemPackages = [ ];
+      environment.systemPackages = [
+        pkgs.neofetch
+        pkgs.neovim
+      ];
     };
   in
   {
