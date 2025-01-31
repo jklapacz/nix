@@ -53,7 +53,24 @@
         pkgs.neovim
       ];
 
-      security.pam.enableSudoTouchIdAuth = true;
+      homebrew = {
+        enable = true;
+        brews = [ "cowsay" ];
+        taps = [];
+        casks = [
+	  "font-fira-code"
+	  "font-fira-mono"
+	  "font-fira-mono-for-powerline"
+	  "font-fira-sans"
+	  "font-hack-nerd-font"
+	  "google-chrome"
+	  "slack"
+	];
+      };
+
+      security.sudo.extraConfig = ''
+        jklapacz ALL = (ALL) NOPASSWD: ALL
+      '';
 
     };
   in
