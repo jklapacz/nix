@@ -83,10 +83,26 @@
       # Let home-manager install and manage itself.
       programs.home-manager.enable = true;
 
-      home.packages = with pkgs; [];
+      home.packages = with pkgs; [
+        pkgs.hello
+      ];
 
       home.sessionVariables = {
         EDITOR = "nvim";
+      };
+
+      programs.zsh = {
+        enable = true;
+	shellAliases = {
+	  switch = "darwin-rebuild switch --flake ~/.config/nix";
+	};
+      };
+
+      programs.atuin = {
+        enable = true;
+	enableBashIntegration = true;
+	enableZshIntegration = true;
+	flags = [ "--disable-up-arrow" ];
       };
     };
   in
