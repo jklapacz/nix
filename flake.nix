@@ -71,6 +71,13 @@
             };
           };
 
+          fonts.packages = with pkgs; [
+            nerd-fonts.fira-code
+            nerd-fonts.hack
+            nerd-fonts.jetbrains-mono
+            nerd-fonts._0xproto
+          ];
+
           # Replace with x86_64-darwin if on Intel Mac
           nixpkgs.hostPlatform = "aarch64-darwin";
 
@@ -155,6 +162,14 @@
             };
           };
 
+          programs.starship = {
+            enable = true;
+
+            settings = {
+              add_newline = false;
+            };
+          };
+
           programs.wezterm = {
             enable = true;
             extraConfig = ''
@@ -164,6 +179,10 @@
                 config = wezterm.config_builder()
               end
               config.color_scheme = "Nord (Gogh)"
+              config.color_scheme = "Catppuccin Mocha"
+
+              config.font = wezterm.font("0xProto Nerd Font")
+              config.font_size = 14.0
               return config
             '';
           };
