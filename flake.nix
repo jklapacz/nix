@@ -81,9 +81,9 @@
           # Replace with x86_64-darwin if on Intel Mac
           nixpkgs.hostPlatform = "aarch64-darwin";
 
-          users.users.jklapacz = {
-            name = "jklapacz";
-            home = "/Users/jklapacz";
+          users.users.${user} = {
+            name = user;
+            home = "/Users/${user}";
           };
 
           programs.zsh.enable = true;
@@ -97,20 +97,20 @@
           homebrew = {
             enable = true;
             brews = [
-              "cowsay"
               "uv"
             ];
-            taps = [ ];
             casks = [
+              "caffeine"
               "docker"
               "google-chrome"
               "moom"
               "slack"
             ];
+            onActivation.cleanup = "zap";
           };
 
           security.sudo.extraConfig = ''
-            jklapacz ALL = (ALL) NOPASSWD: ALL
+            ${user} ALL = (ALL) NOPASSWD: ALL
           '';
 
         };
