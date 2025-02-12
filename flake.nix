@@ -118,6 +118,7 @@
           home.packages = with pkgs; [
             pkgs.hello
             openssh
+            wezterm
           ];
 
           home.sessionVariables = {
@@ -152,6 +153,19 @@
               init.defaultBranch = "main";
               push.autoSetupRemote = true;
             };
+          };
+
+          programs.wezterm = {
+            enable = true;
+            extraConfig = ''
+              local wezterm = require "wezterm"
+              local config = {}
+              if wezterm.config_builder then
+                config = wezterm.config_builder()
+              end
+              config.color_scheme = "Nord (Gogh)"
+              return config
+            '';
           };
 
           home.file.".ssh/config".text = ''
