@@ -26,6 +26,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    lume = {
+      url = "github:trycua/lume";
+      flake = false;
+    };
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
@@ -40,6 +44,7 @@
       homebrew-core,
       homebrew-cask,
       home-manager,
+      lume,
       nixpkgs,
       mac-app-util,
       ...
@@ -68,6 +73,20 @@
                 # 120, 94, 68, 35, 25, 15
                 InitialKeyRepeat = 15;
               };
+
+              dock = {
+                tilesize = 36;
+              };
+
+              trackpad = {
+                Clicking = true;
+                TrackpadThreeFingerDrag = true;
+              };
+            };
+
+            keyboard = {
+              enableKeyMapping = true;
+              remapCapsLockToControl = true;
             };
           };
 
@@ -87,20 +106,35 @@
           };
 
           programs.zsh.enable = true;
-          environment.systemPackages = [
-            pkgs.nixfmt-rfc-style
-            pkgs.docker
-            pkgs.neofetch
-            pkgs.neovim
+          environment.systemPackages = with pkgs; [
+            nixfmt-rfc-style
+            docker
+            neofetch
+            neovim
+            dockutil
           ];
+
+          programs.direnv = {
+            enable = true;
+            nix-direnv.enable = true;
+          };
 
           homebrew = {
             enable = true;
+            taps = [
+              "homebrew/homebrew-core"
+              "homebrew/homebrew-cask"
+              "homebrew/homebrew-bundle"
+              "trycua/lume"
+            ];
             brews = [
+              "lume"
               "uv"
             ];
             casks = [
               "caffeine"
+              "cursor"
+              "claude"
               "docker"
               "google-chrome"
               "moom"
@@ -126,6 +160,7 @@
             pkgs.hello
             openssh
             wezterm
+            nix-direnv
           ];
 
           home.sessionVariables = {
@@ -254,9 +289,10 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
+                "trycua/lume" = lume; # Add this line
               };
-              mutableTaps = false;
-              autoMigrate = true;
+              mutableTaps = true;
+              autoMigrate = false;
             };
           }
         ];
