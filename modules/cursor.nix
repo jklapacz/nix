@@ -1,3 +1,4 @@
+# modules/cursor.nix
 {
   config,
   lib,
@@ -9,6 +10,19 @@ with lib;
 
 let
   cfg = config.programs.cursor;
+
+  # Helper function to generate pretty-printed JSON from nix
+  toJSON =
+    config:
+    pkgs.runCommand "cursor-settings.json"
+      {
+        buildInputs = [ pkgs.jq ];
+        value = builtins.toJSON config;
+        passAsFile = [ "value" ];
+      }
+      ''
+        cat $valuePath | jq '.' > $out
+      '';
 
   makeInstallScript =
     extensions:
@@ -51,6 +65,27 @@ in
       ];
       description = "List of Cursor extensions to install";
     };
+
+    settings = mkOption {
+      type = types.attrs;
+      default = { };
+      example = literalExpression ''
+        {
+          "window.commandCenter" = 1;
+          "editor.formatOnSave" = true;
+          "extensions.experimental.affinity" = {
+            "asvetliakov.vscode-neovim" = 1;
+          };
+        }
+      '';
+      description = "Cursor settings to write to settings.json";
+    };
+
+    userDir = mkOption {
+      type = types.str;
+      default = "Library/Application Support/Cursor/User";
+      description = "Path to Cursor user directory (relative to home)";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -64,5 +99,8 @@ in
     home.activation.installCursorExtensions = hm.dag.entryAfter [ "writeBoundary" ] ''
       $DRY_RUN_CMD ${makeInstallScript cfg.extensions}
     '';
+
+    # Add settings.json management
+    home.file."${cfg.userDir}/settings.json".source = toJSON cfg.settings;
   };
 }

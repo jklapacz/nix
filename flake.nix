@@ -171,6 +171,13 @@
               "ms-python.python"
               "ms-python.vscode-pylance"
             ];
+            settings = {
+              "window.commandCenter" = 1;
+              "editor.formatOnSave" = true;
+              "extensions.experimental.affinity" = {
+                "asvetliakov.vscode-neovim" = 1;
+              };
+            };
           };
 
           home.stateVersion = "23.05";
