@@ -153,6 +153,26 @@
       homeconfig =
         { pkgs, lib, ... }:
         {
+          imports = [
+            ./modules/cursor.nix
+          ];
+
+          programs.cursor = {
+            enable = true;
+            package =
+              if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then
+                "/opt/homebrew/bin/cursor"
+              else
+                "/usr/local/bin/cursor";
+            extensions = [
+              "asvetliakov.vscode-neovim"
+              "jnoortheen.nix-ide"
+              "ms-python.debugpy"
+              "ms-python.python"
+              "ms-python.vscode-pylance"
+            ];
+          };
+
           home.stateVersion = "23.05";
           # Let home-manager install and manage itself.
           programs.home-manager.enable = true;
