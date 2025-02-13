@@ -139,6 +139,7 @@
               "google-chrome"
               "moom"
               "slack"
+              "visual-studio-code"
             ];
             onActivation.cleanup = "zap";
           };
@@ -295,6 +296,7 @@
               autoMigrate = false;
             };
           }
+          ./hosts/darwin
         ];
       };
     };
