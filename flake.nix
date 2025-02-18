@@ -58,37 +58,6 @@
 
           system.configurationRevision = self.rev or self.dirtyRev or null;
           system.stateVersion = 4;
-          system = {
-            defaults = {
-              CustomUserPreferences = {
-                "com.cursor.app" = {
-                  ApplePressAndHoldEnabled = false;
-                };
-              };
-              NSGlobalDomain = {
-                ApplePressAndHoldEnabled = false;
-
-                # 120, 90, 60, 30, 12, 6, 2
-                KeyRepeat = 2;
-                # 120, 94, 68, 35, 25, 15
-                InitialKeyRepeat = 15;
-              };
-
-              dock = {
-                tilesize = 36;
-              };
-
-              trackpad = {
-                Clicking = true;
-                TrackpadThreeFingerDrag = true;
-              };
-            };
-
-            keyboard = {
-              enableKeyMapping = true;
-              remapCapsLockToControl = true;
-            };
-          };
 
           fonts.packages = with pkgs; [
             nerd-fonts.fira-code
@@ -136,6 +105,7 @@
               "cursor"
               "claude"
               "docker"
+              "firefox"
               "google-chrome"
               "moom"
               "slack"
