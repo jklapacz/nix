@@ -290,6 +290,9 @@
                       HostName github.com
                       User git
                       IdentityFile ~/.ssh/id_ed25519_personal
+                    Host cortex
+                      HostName cortex.local
+                      User root
                   '';
 
               ".gitconfig".text =
