@@ -125,8 +125,18 @@
 
         };
 
-      homeconfig =
-        { pkgs, lib, ... }:
+      baseHomeConfig =
+        {
+          pkgs,
+          lib,
+          hostname,
+          ...
+        }:
+        let
+          isWork = hostname == "Shadowfax";
+          personalEmail = "kubaklapacz@gmail.com";
+          workEmail = "jakub@gordiansoftware.com";
+        in
         {
           imports = [
             ./modules/cursor.nix
@@ -150,6 +160,7 @@
             ];
 
             settings = {
+              "editor.lineNumbers" = "relative";
               "window.commandCenter" = 1;
               "editor.formatOnSave" = true;
               "extensions.verifySignature" = false;
@@ -157,7 +168,7 @@
                 "asvetliakov.vscode-neovim" = 1;
               };
               "projectManager.git.baseFolders" = [
-                "/Users/jklapacz/dev"
+                "/Users/${user}/dev"
               ];
               "editor.fontFamily" =
                 "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
@@ -202,7 +213,7 @@
           programs.git = {
             enable = true;
             userName = "Jakub Klapacz";
-            userEmail = "jakub@gordiansoftware.com";
+            userEmail = if isWork then workEmail else personalEmail;
             ignores = [ ".DS_STORE" ];
             extraConfig = {
               init.defaultBranch = "main";
@@ -235,47 +246,83 @@
             '';
           };
 
-          home.file.".ssh/config".text = ''
-            # Default GitHub account (work)
-            Host github.com
-              HostName github.com
-              User git
-              IdentityFile ~/.ssh/id_ed25519_work
-              
-            # Personal GitHub account
-            Host github-personal
-              HostName github.com
-              User git
-              IdentityFile ~/.ssh/id_ed25519_personal
-          '';
-
           # Generate SSH keys if they don't exist
-          home.activation.generateSSHKeys = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            if [ ! -f "$HOME/.ssh/id_ed25519_personal" ]; then
-              $DRY_RUN_CMD ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -C "kubaklapacz@gmail.com" -f "$HOME/.ssh/id_ed25519_personal" -N ""
-            fi
-            if [ ! -f "$HOME/.ssh/id_ed25519_work" ]; then
-              $DRY_RUN_CMD ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -C "jakub@gordiansoftware.com" -f "$HOME/.ssh/id_ed25519_work" -N ""
-            fi
-          '';
+          home.activation.generateSSHKeys = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+            if isWork then
+              ''
+                if [ ! -f "$HOME/.ssh/id_ed25519_personal" ]; then
+                  $DRY_RUN_CMD ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -C "${personalEmail}" -f "$HOME/.ssh/id_ed25519_personal" -N ""
+                fi
+                if [ ! -f "$HOME/.ssh/id_ed25519_work" ]; then
+                  $DRY_RUN_CMD ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -C "${workEmail}" -f "$HOME/.ssh/id_ed25519_work" -N ""
+                fi
+              ''
+            else
+              ''
+                if [ ! -f "$HOME/.ssh/id_ed25519_personal" ]; then
+                  $DRY_RUN_CMD ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -C "${personalEmail}" -f "$HOME/.ssh/id_ed25519_personal" -N ""
+                fi
+              ''
+          );
 
           # Create a Git configuration template
-          home.file.".gitconfig".text = ''
-            [user]
-              name = Jakub Klapacz
-              email = jakub@gordiansoftware.com
+          home.file =
+            {
+              ".ssh/config".text =
+                if isWork then
+                  ''
+                    # Default GitHub account (work)
+                    Host github.com
+                      HostName github.com
+                      User git
+                      IdentityFile ~/.ssh/id_ed25519_work
 
-            [includeIf "gitdir:~/.config/nix/"]
-              path = ~/.gitconfig-personal
-          '';
+                    # Personal GitHub account
+                    Host github-personal
+                      HostName github.com
+                      User git
+                      IdentityFile ~/.ssh/id_ed25519_personal
+                  ''
+                else
+                  ''
+                    # Personal GitHub account
+                    Host github.com
+                      HostName github.com
+                      User git
+                      IdentityFile ~/.ssh/id_ed25519_personal
+                  '';
 
-          home.file.".gitconfig-personal".text = ''
-            [user]
-              name = Jakub Klapacz
-              email = kubaklapacz@gmail.com
-          '';
+              ".gitconfig".text =
+                if isWork then
+                  ''
+                    [user]
+                      name = Jakub Klapacz
+                      email = ${workEmail}
 
+                      [includeIf "gitdir:~/.config/nix/"]
+                        path = ~/.gitconfig-personal
+                  ''
+                else
+                  ''
+                    [user]
+                      name = Jakub Klapacz
+                      email = ${personalEmail}
+                  '';
+            }
+            // (
+              if isWork then
+                {
+                  ".gitconfig-personal".text = ''
+                    [user]
+                      name = Jakub Klapacz
+                      email = ${personalEmail}
+                  '';
+                }
+              else
+                { }
+            );
         };
+      mkHomeConfig = hostname: { pkgs, lib, ... }: baseHomeConfig { inherit pkgs lib hostname; };
     in
     {
       darwinConfigurations."Shadowfax" = darwin.lib.darwinSystem {
@@ -291,7 +338,41 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.verbose = true;
-            home-manager.users.jklapacz = homeconfig;
+            home-manager.users.${user} = mkHomeConfig "Shadowfax";
+            home-manager.sharedModules = [
+              mac-app-util.homeManagerModules.default
+            ];
+            nix-homebrew = {
+              inherit user;
+              enable = true;
+              taps = {
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
+                "homebrew/homebrew-bundle" = homebrew-bundle;
+                "trycua/lume" = lume; # Add this line
+              };
+              mutableTaps = true;
+              autoMigrate = false;
+            };
+          }
+          ./hosts/darwin
+        ];
+      };
+
+      darwinConfigurations."Anduril" = darwin.lib.darwinSystem {
+        modules = [
+          configuration
+          mac-app-util.darwinModules.default
+          home-manager.darwinModules.home-manager
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix = {
+              enable = false;
+            };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.verbose = true;
+            home-manager.users.${user} = mkHomeConfig "Anduril";
             home-manager.sharedModules = [
               mac-app-util.homeManagerModules.default
             ];
