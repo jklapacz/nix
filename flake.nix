@@ -139,13 +139,8 @@
                 "/opt/homebrew/bin/cursor"
               else
                 "/usr/local/bin/cursor";
-            extensions = [
-              #"ms-python.debugpy"
-              #"ms-python.python"
-              #"ms-python.vscode-pylance"
-            ];
 
-            extensionsBeta = with pkgs.vscode-marketplace; [
+            extensions = with pkgs.vscode-marketplace; [
               alefragnani.project-manager
               asvetliakov.vscode-neovim
               jnoortheen.nix-ide
@@ -153,6 +148,7 @@
               ms-python.python
               ms-python.vscode-pylance
             ];
+
             settings = {
               "window.commandCenter" = 1;
               "editor.formatOnSave" = true;
@@ -163,6 +159,9 @@
               "projectManager.git.baseFolders" = [
                 "/Users/jklapacz/dev"
               ];
+              "editor.fontFamily" =
+                "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
+              "editor.fontSize" = 14;
             };
           };
 

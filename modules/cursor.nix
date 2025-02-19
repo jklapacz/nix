@@ -13,6 +13,16 @@ let
 
   extensionPath = ".cursor/extensions";
 
+  userDir =
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "Library/Application Support/Cursor/User"
+    else
+      "${config.xdg.configHome}/Cursor/User";
+
+  configFilePath = "${userDir}/settings2.json";
+
+  jsonFormat = pkgs.formats.json { };
+
   # Helper function to generate pretty-printed JSON from nix
   toJSON =
     config:
@@ -37,28 +47,10 @@ let
           builtins.attrNames (builtins.readDir (ext + "/share/vscode/extensions"))
       );
 
-  makeInstallScript =
-    extensions:
-    let
-      cursorPath = cfg.package;
-      installedExts = ''$(${cursorPath} --list-extensions)'';
-
-      installCmds = map (ext: ''
-        if ! echo "$installedExts" | grep -q "^${ext}$"; then
-          echo "Installing Cursor extension: ${ext}"
-          ${cursorPath} --install-extension "${ext}"
-        fi
-      '') extensions;
-    in
-    pkgs.writeShellScript "install-cursor-extensions" ''
-      set -e
-      if [ ! -x "${cursorPath}" ]; then
-        echo "Error: Cursor not found at ${cursorPath}"
-        exit 1
-      fi
-      ${concatStringsSep "\n" installCmds}
-    '';
-
+  mergedUserSettings =
+    cfg.userSettings
+    // optionalAttrs (!cfg.enableUpdateCheck) { "update.mode" = "none"; }
+    // optionalAttrs (!cfg.enableExtensionUpdateCheck) { "extensions.autoCheckUpdates" = false; };
 in
 {
   options.programs.cursor = {
@@ -70,16 +62,6 @@ in
     };
 
     extensions = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      example = [
-        "vscodevim.vim"
-        "ms-python.python"
-      ];
-      description = "List of Cursor extensions to install";
-    };
-
-    extensionsBeta = mkOption {
       type = types.listOf types.package;
       default = [ ];
       example = literalExpression ''
@@ -87,7 +69,38 @@ in
           pkgs.vscode-marketplace.jnoortheen.nix-ide
         ]
       '';
-      description = "List of Cursor extensions to install (beta)";
+      description = "List of Cursor extensions to install";
+    };
+
+    enableUpdateCheck = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Whether to enable update checks/notifications.
+      '';
+    };
+
+    enableExtensionUpdateCheck = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Whether to enable update notifications for extensions.
+      '';
+    };
+
+    userSettings = mkOption {
+      type = jsonFormat.type;
+      default = { };
+      example = literalExpression ''
+        {
+          "files.autoSave" = "off";
+          "[nix]"."editor.tabSize" = 2;
+        }
+      '';
+      description = ''
+        Configuration written to Visual Studio Code's
+        {file}`settings.json`.
+      '';
     };
 
     settings = mkOption {
@@ -100,9 +113,6 @@ in
           "extensions.experimental.affinity" = {
             "asvetliakov.vscode-neovim" = 1;
           };
-          "projectManager.git.baseFolders" = [
-            "/Users/jklapacz/dev"
-          ];
         }
       '';
       description = "Cursor settings to write to settings.json";
@@ -123,22 +133,11 @@ in
       }
     ];
 
-    home.activation.debugCursorExtensions = hm.dag.entryBefore [ "installCursorExtensions" ] ''
-      echo "Debugging Cursor extensionsBeta packages:"
-      ${concatMapStrings (pkg: ''
-        echo "Package: ${pkg.name}"
-        echo "Location: ${pkg}"
-        echo "ext id: ${pkg.vscodeExtUniqueId}"
-        echo "---"
-      '') cfg.extensionsBeta}
-    '';
-
-    home.activation.installCursorExtensions = hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD ${makeInstallScript cfg.extensions}
-    '';
-
     home.file = mkMerge [
-      (mkIf (cfg.extensionsBeta != [ ]) (mkMerge (concatMap toPaths cfg.extensionsBeta)))
+      (mkIf (cfg.extensions != [ ]) (mkMerge (concatMap toPaths cfg.extensions)))
+      (mkIf (cfg.userSettings != { }) {
+        "${configFilePath}".source = jsonFormat.generate "vscode-user-settings" mergedUserSettings;
+      })
 
       # Settings.json management
       { "${cfg.userDir}/settings.json".source = toJSON cfg.settings; }
