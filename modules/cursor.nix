@@ -11,6 +11,8 @@ with lib;
 let
   cfg = config.programs.cursor;
 
+  extensionPath = ".cursor/extensions";
+
   # Helper function to generate pretty-printed JSON from nix
   toJSON =
     config:
@@ -23,6 +25,17 @@ let
       ''
         cat $valuePath | jq '.' > $out
       '';
+
+  # Function to get extension paths
+  toPaths =
+    ext:
+    map (k: { "${extensionPath}/${k}-${ext.version}".source = "${ext}/share/vscode/extensions/${k}"; })
+      (
+        if ext ? vscodeExtUniqueId then
+          [ ext.vscodeExtUniqueId ]
+        else
+          builtins.attrNames (builtins.readDir (ext + "/share/vscode/extensions"))
+      );
 
   makeInstallScript =
     extensions:
@@ -66,6 +79,17 @@ in
       description = "List of Cursor extensions to install";
     };
 
+    extensionsBeta = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      example = literalExpression ''
+        [
+          pkgs.vscode-marketplace.jnoortheen.nix-ide
+        ]
+      '';
+      description = "List of Cursor extensions to install (beta)";
+    };
+
     settings = mkOption {
       type = types.attrs;
       default = { };
@@ -76,6 +100,9 @@ in
           "extensions.experimental.affinity" = {
             "asvetliakov.vscode-neovim" = 1;
           };
+          "projectManager.git.baseFolders" = [
+            "/Users/jklapacz/dev"
+          ];
         }
       '';
       description = "Cursor settings to write to settings.json";
@@ -96,11 +123,27 @@ in
       }
     ];
 
+    home.activation.debugCursorExtensions = hm.dag.entryBefore [ "installCursorExtensions" ] ''
+      echo "Debugging Cursor extensionsBeta packages:"
+      ${concatMapStrings (pkg: ''
+        echo "Package: ${pkg.name}"
+        echo "Location: ${pkg}"
+        echo "ext id: ${pkg.vscodeExtUniqueId}"
+        echo "---"
+      '') cfg.extensionsBeta}
+    '';
+
     home.activation.installCursorExtensions = hm.dag.entryAfter [ "writeBoundary" ] ''
       $DRY_RUN_CMD ${makeInstallScript cfg.extensions}
     '';
 
+    home.file = mkMerge [
+      (mkIf (cfg.extensionsBeta != [ ]) (mkMerge (concatMap toPaths cfg.extensionsBeta)))
+
+      # Settings.json management
+      { "${cfg.userDir}/settings.json".source = toJSON cfg.settings; }
+    ];
+
     # Add settings.json management
-    home.file."${cfg.userDir}/settings.json".source = toJSON cfg.settings;
   };
 }

@@ -33,6 +33,7 @@
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs =
@@ -47,6 +48,7 @@
       lume,
       nixpkgs,
       mac-app-util,
+      nix-vscode-extensions,
       ...
     }:
     let
@@ -54,6 +56,9 @@
       configuration =
         { pkgs, ... }:
         {
+          nixpkgs.overlays = [
+            nix-vscode-extensions.overlays.default
+          ];
           nixpkgs.config.allowUnfree = true;
 
           system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -135,18 +140,29 @@
               else
                 "/usr/local/bin/cursor";
             extensions = [
-              "asvetliakov.vscode-neovim"
-              "jnoortheen.nix-ide"
-              "ms-python.debugpy"
-              "ms-python.python"
-              "ms-python.vscode-pylance"
+              #"ms-python.debugpy"
+              #"ms-python.python"
+              #"ms-python.vscode-pylance"
+            ];
+
+            extensionsBeta = with pkgs.vscode-marketplace; [
+              alefragnani.project-manager
+              asvetliakov.vscode-neovim
+              jnoortheen.nix-ide
+              ms-python.debugpy
+              ms-python.python
+              ms-python.vscode-pylance
             ];
             settings = {
               "window.commandCenter" = 1;
               "editor.formatOnSave" = true;
+              "extensions.verifySignature" = false;
               "extensions.experimental.affinity" = {
                 "asvetliakov.vscode-neovim" = 1;
               };
+              "projectManager.git.baseFolders" = [
+                "/Users/jklapacz/dev"
+              ];
             };
           };
 
