@@ -55,6 +55,16 @@
       user = "jklapacz";
       configuration =
         { pkgs, ... }:
+        let
+          detectVM = pkgs.runCommandLocal "detect-vm" { } ''
+            if ioreg -l | grep -q "virtual machine"; then
+              echo "1" > $out
+            else
+              echo "0" > $out
+            fi
+          '';
+          isVM = builtins.readFile detectVM == "1";
+        in
         {
           environment.etc."nix/nix.custom.conf".text = pkgs.lib.mkForce ''
             # Add nix settings to seperate conf file
@@ -87,13 +97,15 @@
           };
 
           programs.zsh.enable = true;
-          environment.systemPackages = with pkgs; [
-            nixfmt-rfc-style
-            docker
-            neofetch
-            neovim
-            dockutil
-          ];
+          environment.systemPackages =
+            with pkgs;
+            [
+              nixfmt-rfc-style
+              neofetch
+              neovim
+              dockutil
+            ]
+            ++ lib.optionals (!isVM) [ docker ];
 
           programs.direnv = {
             enable = true;
@@ -116,13 +128,12 @@
               "caffeine"
               "cursor"
               "claude"
-              "docker"
               "firefox"
               "google-chrome"
               "moom"
               "slack"
               "visual-studio-code"
-            ];
+            ] ++ (if !isVM then [ "docker" ] else [ ]);
             onActivation.cleanup = "zap";
           };
 
