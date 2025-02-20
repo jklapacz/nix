@@ -56,6 +56,13 @@
       configuration =
         { pkgs, ... }:
         {
+          environment.etc."nix/nix.custom.conf".text = pkgs.lib.mkForce ''
+            # Add nix settings to seperate conf file
+            # since we use Determinate Nix on our systems.
+            trusted-users = root ${user}
+            extra-substituters = https://devenv.cachix.org https://nixpkgs-python.cachix.org
+            extra-trusted-public-keys = nixpkgs-python.cachix.org-1:hxjI7pFxTyuTHn2NkvWCrAUcNZLNS3ZAvfYNuYifcEU= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+          '';
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
           ];
@@ -154,6 +161,7 @@
               alefragnani.project-manager
               asvetliakov.vscode-neovim
               jnoortheen.nix-ide
+              mkhl.direnv
               ms-python.debugpy
               ms-python.python
               ms-python.vscode-pylance
@@ -169,6 +177,7 @@
               };
               "projectManager.git.baseFolders" = [
                 "/Users/${user}/dev"
+                "/Users/${user}/.config"
               ];
               "editor.fontFamily" =
                 "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
@@ -185,6 +194,7 @@
             openssh
             wezterm
             nix-direnv
+            devenv
           ];
 
           home.sessionVariables = {
@@ -195,6 +205,10 @@
             enable = true;
             shellAliases = {
               switch = "darwin-rebuild switch --flake ~/.config/nix";
+              gap = "git add -p";
+              gcm = "git commit -m";
+              gst = "git status";
+              gsw = "git switch";
             };
           };
 
@@ -215,6 +229,21 @@
             userName = "Jakub Klapacz";
             userEmail = if isWork then workEmail else personalEmail;
             ignores = [ ".DS_STORE" ];
+            aliases = {
+              # Short, pretty log with graph and refs
+              lg = ''
+                log --graph \
+                  --pretty=format:'%C(yellow)%h%Creset -%C(green)%aN%Creset - %C(blue)%ar%Creset %C(auto)%d %Creset%s'
+              '';
+
+              lga = "log --graph --all --decorate --oneline";
+
+              # Detailed log with date, commit message, and stats
+              lgd = ''
+                log --pretty=format:'%C(yellow)%h %Creset| %C(green)%an %Creset| %C(blue)%ar %Creset| %s' --stat
+              '';
+
+            };
             extraConfig = {
               init.defaultBranch = "main";
               push.autoSetupRemote = true;
