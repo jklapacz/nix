@@ -57,7 +57,7 @@
         { pkgs, ... }:
         let
           detectVM = pkgs.runCommandLocal "detect-vm" { } ''
-            if ioreg -l | grep -q "virtual machine"; then
+            if /usr/sbin/ioreg -l | grep -q "virtual machine"; then
               echo "1" > $out
             else
               echo "0" > $out
@@ -66,6 +66,11 @@
           isVM = builtins.readFile detectVM == "1";
         in
         {
+
+          system.activationScripts.postUserActivation.text = ''
+            echo >&2 "-----> VM Status: ${if isVM then "Running in VM" else "Not in VM"}"
+          '';
+
           environment.etc."nix/nix.custom.conf".text = pkgs.lib.mkForce ''
             # Add nix settings to seperate conf file
             # since we use Determinate Nix on our systems.
@@ -171,6 +176,7 @@
             extensions = with pkgs.vscode-marketplace; [
               alefragnani.project-manager
               asvetliakov.vscode-neovim
+              eamodio.gitlens
               jnoortheen.nix-ide
               mkhl.direnv
               ms-python.debugpy
