@@ -227,6 +227,11 @@
               gst = "git status";
               gsw = "git switch";
             };
+            initExtra = ''
+              if [ -f "$HOME/.secrets" ]; then
+                source "$HOME/.secrets"
+              fi
+            '';
           };
 
           programs.atuin = {
