@@ -177,6 +177,7 @@
               alefragnani.project-manager
               asvetliakov.vscode-neovim
               eamodio.gitlens
+              golang.go
               jnoortheen.nix-ide
               mkhl.direnv
               ms-python.debugpy
@@ -212,6 +213,7 @@
             wezterm
             nix-direnv
             devenv
+            awscli2
           ];
 
           home.sessionVariables = {
@@ -226,10 +228,16 @@
               gcm = "git commit -m";
               gst = "git status";
               gsw = "git switch";
+              aws-login = "aws sso login --sso-session gordian-aws && aws sso login --profile gordian-infra-orchestration-tfstate-access";
             };
             initExtra = ''
               if [ -f "$HOME/.secrets" ]; then
                 source "$HOME/.secrets"
+              fi
+
+              # Add /opt/gordian/bin to PATH if it exists
+              if [ -d "/opt/gordian/bin" ]; then
+                export PATH="/opt/gordian/bin:$PATH"
               fi
             '';
           };
@@ -333,6 +341,11 @@
                       HostName github.com
                       User git
                       IdentityFile ~/.ssh/id_ed25519_personal
+
+                    Host legacy-laptop-local
+                      HostName 192.168.1.110
+                      User gordian
+                      IdentityFile ~/.ssh/id_ed25519_work
                   ''
                 else
                   ''
