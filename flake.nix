@@ -176,6 +176,7 @@
             extensions = with pkgs.vscode-marketplace; [
               alefragnani.project-manager
               asvetliakov.vscode-neovim
+              charliermarsh.ruff
               eamodio.gitlens
               golang.go
               jnoortheen.nix-ide
@@ -186,9 +187,11 @@
             ];
 
             settings = {
-              "editor.lineNumbers" = "relative";
-              "window.commandCenter" = 1;
               "editor.formatOnSave" = true;
+              "editor.fontFamily" =
+                "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
+              "editor.fontSize" = 14;
+              "editor.lineNumbers" = "relative";
               "extensions.verifySignature" = false;
               "extensions.experimental.affinity" = {
                 "asvetliakov.vscode-neovim" = 1;
@@ -197,9 +200,16 @@
                 "/Users/${user}/dev"
                 "/Users/${user}/.config"
               ];
-              "editor.fontFamily" =
-                "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
-              "editor.fontSize" = 14;
+              "window.commandCenter" = 1;
+
+              "[python]" = {
+                "editor.defaultFormatter" = "charliermarsh.ruff";
+                "editor.formatOnSave" = true;
+                "editor.codeActionsOnSave" = {
+                  "source.fixAll.ruff" = "explicit";
+                  "source.organizeImports.ruff" = "explicit";
+                };
+              };
             };
           };
 
@@ -214,6 +224,7 @@
             nix-direnv
             devenv
             awscli2
+            ssm-session-manager-plugin
           ];
 
           home.sessionVariables = {
