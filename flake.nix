@@ -66,6 +66,7 @@
           isVM = builtins.readFile detectVM == "1";
         in
         {
+          home-manager.backupFileExtension = "backup";
 
           system.activationScripts.postUserActivation.text = ''
             echo >&2 "-----> VM Status: ${if isVM then "Running in VM" else "Not in VM"}"
@@ -258,6 +259,11 @@
             enableBashIntegration = true;
             enableZshIntegration = true;
             flags = [ "--disable-up-arrow" ];
+            settings = {
+              # Disable automatic enter after selection
+              enter_accept = false;
+              search_mode = "fuzzy";
+            };
           };
 
           programs.eza = {
@@ -378,6 +384,9 @@
                       email = ${workEmail}
 
                       [includeIf "gitdir:~/.config/nix/"]
+                        path = ~/.gitconfig-personal
+
+                      [includeIf "gitdir:~/dev/devenv-templates/"]
                         path = ~/.gitconfig-personal
                   ''
                 else
