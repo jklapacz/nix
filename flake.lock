@@ -192,22 +192,6 @@
         "type": "github"
       }
     },
-    "lume": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1739374280,
-        "narHash": "sha256-Jpvtr87ApCTNMCZcqFnxDhLVX0gqrXpdJ2b68z/aK58=",
-        "owner": "trycua",
-        "repo": "lume",
-        "rev": "661cdf6fcb4a4b4068357ca15edff49f1e07d1ce",
-        "type": "github"
-      },
-      "original": {
-        "owner": "trycua",
-        "repo": "lume",
-        "type": "github"
-      }
-    },
     "mac-app-util": {
       "inputs": {
         "cl-nix-lite": "cl-nix-lite",
@@ -372,7 +356,6 @@
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
-        "lume": "lume",
         "mac-app-util": "mac-app-util",
         "nix-homebrew": "nix-homebrew",
         "nix-vscode-extensions": "nix-vscode-extensions",

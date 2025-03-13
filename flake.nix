@@ -26,10 +26,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    lume = {
-      url = "github:trycua/lume";
-      flake = false;
-    };
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
@@ -45,7 +41,6 @@
       homebrew-core,
       homebrew-cask,
       home-manager,
-      lume,
       nixpkgs,
       mac-app-util,
       nix-vscode-extensions,
@@ -81,6 +76,9 @@
           '';
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
+            (final: prev: {
+              lume = pkgs.callPackage ./modules/lume.nix { };
+            })
           ];
           nixpkgs.config.allowUnfree = true;
 
@@ -124,7 +122,6 @@
               "homebrew/homebrew-core"
               "homebrew/homebrew-cask"
               "homebrew/homebrew-bundle"
-              "trycua/lume"
             ];
             brews = [
               "uv"
@@ -225,6 +222,7 @@
             devenv
             awscli2
             ssm-session-manager-plugin
+            lume
           ];
 
           home.sessionVariables = {
@@ -435,7 +433,6 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
-                "trycua/lume" = lume; # Add this line
               };
               mutableTaps = true;
               autoMigrate = false;
@@ -469,7 +466,6 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
-                "trycua/lume" = lume; # Add this line
               };
               mutableTaps = true;
               autoMigrate = false;
