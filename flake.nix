@@ -127,7 +127,6 @@
               "trycua/lume"
             ];
             brews = [
-              "lume"
               "uv"
             ];
             casks = [
