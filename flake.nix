@@ -29,6 +29,10 @@
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
+    lume = {
+      url = "github:trycua/lume";
+      flake = false;
+    };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
@@ -76,9 +80,6 @@
           '';
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
-            (final: prev: {
-              lume = pkgs.callPackage ./modules/lume.nix { };
-            })
           ];
           nixpkgs.config.allowUnfree = true;
 
@@ -122,21 +123,28 @@
               "homebrew/homebrew-core"
               "homebrew/homebrew-cask"
               "homebrew/homebrew-bundle"
+              "trycua/lume"
             ];
             brews = [
-              "uv"
+              "lume"
             ];
             casks = [
+              "arc"
               "caffeine"
               "cursor"
               "claude"
+              "deskpad"
               "firefox"
               "google-chrome"
               "moom"
               "slack"
               "visual-studio-code"
             ] ++ (if !isVM then [ "docker" ] else [ ]);
-            onActivation.cleanup = "zap";
+            onActivation = {
+              cleanup = "zap";
+              autoUpdate = true;
+              upgrade = true;
+            };
           };
 
           security.sudo.extraConfig = ''
@@ -184,6 +192,7 @@
             ];
 
             settings = {
+              "workbench.colorTheme" = "Abyss";
               "editor.formatOnSave" = true;
               "editor.fontFamily" =
                 "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
@@ -222,7 +231,7 @@
             devenv
             awscli2
             ssm-session-manager-plugin
-            lume
+            uv
           ];
 
           home.sessionVariables = {

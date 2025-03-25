@@ -38,10 +38,11 @@ stdenv.mkDerivation rec {
   sourceRoot = ".";
 
   installPhase = ''
+    mkdir -p $out
+    /usr/sbin/installer -pkg lume.pkg -target $out
+    # You might need to create proper symlinks after this
     mkdir -p $out/bin
-    ls > /tmp/ls.txt
-    cp usr/local/bin/lume $out/bin/lume1
-    chmod +x $out/bin/lume
+    ln -s $out/usr/local/bin/lume $out/bin/lume
   '';
 
   meta = with lib; {
