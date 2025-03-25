@@ -266,6 +266,7 @@
             terraform
             uv
             wezterm
+            rsync
             customPackages.biome
           ];
 
