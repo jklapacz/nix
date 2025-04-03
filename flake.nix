@@ -323,7 +323,7 @@
               config.color_scheme = "Nord (Gogh)"
               config.color_scheme = "Catppuccin Mocha"
 
-              config.font = wezterm.font("0xProto Nerd Font")
+              config.font = wezterm.font("FiraCode Nerd Font")
               config.font_size = 14.0
               return config
             '';
