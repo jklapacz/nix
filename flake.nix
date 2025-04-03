@@ -231,6 +231,7 @@
             devenv
             awscli2
             ssm-session-manager-plugin
+            terraform
             uv
           ];
 
