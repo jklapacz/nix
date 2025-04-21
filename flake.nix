@@ -189,6 +189,7 @@
               ms-python.debugpy
               ms-python.python
               ms-python.vscode-pylance
+              textualize.textual-syntax-highlighter
             ];
 
             settings = {
@@ -224,19 +225,20 @@
           programs.home-manager.enable = true;
 
           home.packages = with pkgs; [
-            pkgs.hello
-            openssh
-            wezterm
-            nix-direnv
-            devenv
             awscli2
+            devenv
+            gh
+            nix-direnv
+            openssh
             ssm-session-manager-plugin
             terraform
             uv
+            wezterm
           ];
 
           home.sessionVariables = {
             EDITOR = "nvim";
+            PYTHONDONTWRITEBYTECODE = 1;
           };
 
           programs.zsh = {
