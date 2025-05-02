@@ -268,6 +268,7 @@
             uv
             wezterm
             rsync
+            deno
             customPackages.biome
           ];
 
