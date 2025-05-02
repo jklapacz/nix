@@ -80,6 +80,12 @@
           '';
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
+            (final: prev: {
+              customPackages = import ./modules/biome {
+                pkgs = final;
+                lib = final.lib;
+              };
+            })
           ];
           nixpkgs.config.allowUnfree = true;
 
@@ -139,6 +145,7 @@
               "moom"
               "slack"
               "visual-studio-code"
+              "postman"
             ] ++ (if !isVM then [ "docker" ] else [ ]);
             onActivation = {
               cleanup = "zap";
@@ -190,6 +197,7 @@
               ms-python.python
               ms-python.vscode-pylance
               textualize.textual-syntax-highlighter
+              editorconfig.editorconfig
             ];
 
             settings = {
@@ -208,6 +216,7 @@
                 "/Users/${user}/.config"
               ];
               "window.commandCenter" = 1;
+              "files.insertFinalNewline" = true;
 
               "[python]" = {
                 "editor.defaultFormatter" = "charliermarsh.ruff";
@@ -234,6 +243,7 @@
             terraform
             uv
             wezterm
+            customPackages.biome
           ];
 
           home.sessionVariables = {
