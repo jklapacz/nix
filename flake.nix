@@ -202,7 +202,6 @@
 
             settings = {
               "workbench.colorTheme" = "Abyss";
-              "editor.formatOnSave" = true;
               "editor.fontFamily" =
                 "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
               "editor.fontSize" = 14;
@@ -216,8 +215,32 @@
                 "/Users/${user}/.config"
               ];
               "window.commandCenter" = 1;
-              "files.insertFinalNewline" = true;
 
+              "files.insertFinalNewline" = true;
+              "editor.formatOnSave" = true;
+
+              "[json]" = {
+                "editor.defaultFormatter" = "biomejs.biome";
+              };
+              "[jsonc]" = {
+                "editor.defaultFormatter" = "biomejs.biome";
+              };
+              "[javascript]" = {
+                "editor.defaultFormatter" = "biomejs.biome";
+                "source.organizeImports.biome" = "explicit";
+              };
+              "[typescript]" = {
+                "editor.defaultFormatter" = "biomejs.biome";
+                "source.organizeImports.biome" = "explicit";
+              };
+              "[javascriptreact]" = {
+                "editor.defaultFormatter" = "biomejs.biome";
+                "source.organizeImports.biome" = "explicit";
+              };
+              "[typescriptreact]" = {
+                "editor.defaultFormatter" = "biomejs.biome";
+                "source.organizeImports.biome" = "explicit";
+              };
               "[python]" = {
                 "editor.defaultFormatter" = "charliermarsh.ruff";
                 "editor.formatOnSave" = true;
