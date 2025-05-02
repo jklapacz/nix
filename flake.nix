@@ -198,6 +198,7 @@
               ms-python.vscode-pylance
               textualize.textual-syntax-highlighter
               editorconfig.editorconfig
+              denoland.vscode-deno
             ];
 
             settings = {
