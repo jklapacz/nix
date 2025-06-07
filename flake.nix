@@ -297,6 +297,8 @@
               if [ -d "/opt/gordian/bin" ]; then
                 export PATH="/opt/gordian/bin:$PATH"
               fi
+
+              export PATH="$HOME/.local/bin:$PATH"
             '';
           };
 
