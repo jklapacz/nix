@@ -66,10 +66,7 @@
         in
         {
           home-manager.backupFileExtension = "backup";
-
-          system.activationScripts.postUserActivation.text = ''
-            echo >&2 "-----> VM Status: ${if isVM then "Running in VM" else "Not in VM"}"
-          '';
+          system.primaryUser = "jklapacz";
 
           environment.etc."nix/nix.custom.conf".text = pkgs.lib.mkForce ''
             # Add nix settings to seperate conf file
@@ -81,7 +78,11 @@
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
             (final: prev: {
-              customPackages = import ./modules/biome {
+              customBiome = import ./modules/biome {
+                pkgs = final;
+                lib = final.lib;
+              };
+              customClaude = import ./modules/claude {
                 pkgs = final;
                 lib = final.lib;
               };
@@ -220,6 +221,11 @@
               "files.insertFinalNewline" = true;
               "editor.formatOnSave" = true;
 
+              "editor.codeActionsOnSave" = {
+                "source.fixAll.biome" = "always";
+                "source.organizeImports.biome" = "always";
+              };
+
               "[json]" = {
                 "editor.defaultFormatter" = "biomejs.biome";
               };
@@ -268,8 +274,9 @@
             uv
             wezterm
             rsync
-            deno
-            customPackages.biome
+            customBiome.biome
+            customClaude.claude
+            jdk11
           ];
 
           home.sessionVariables = {
@@ -408,7 +415,7 @@
                       IdentityFile ~/.ssh/id_ed25519_personal
 
                     Host legacy-laptop-local
-                      HostName 192.168.1.110
+                      HostName 192.168.1.108
                       User gordian
                       IdentityFile ~/.ssh/id_ed25519_work
                   ''
@@ -432,6 +439,15 @@
                       email = ${workEmail}
 
                       [includeIf "gitdir:~/.config/nix/"]
+                        path = ~/.gitconfig-personal
+
+                      [includeIf "gitdir:~/dev/novnc-fork/"]
+                        path = ~/.gitconfig-personal
+
+                      [includeIf "gitdir:~/dev/terraform-provider-postgresql/"]
+                        path = ~/.gitconfig-personal
+
+                      [includeIf "gitdir:~/dev/cua/"]
                         path = ~/.gitconfig-personal
 
                       [includeIf "gitdir:~/dev/devenv-templates/"]
