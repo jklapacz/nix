@@ -199,7 +199,7 @@
             ];
 
             settings = {
-              "workbench.colorTheme" = "Abyss";
+              "workbench.colorTheme" = "Monokai";
               "editor.fontFamily" =
                 "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
               "editor.fontSize" = 14;
