@@ -78,10 +78,6 @@
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
             (final: prev: {
-              customBiome = import ./modules/biome {
-                pkgs = final;
-                lib = final.lib;
-              };
               customClaude = import ./modules/claude {
                 pkgs = final;
                 lib = final.lib;
@@ -274,7 +270,8 @@
             uv
             wezterm
             rsync
-            customBiome.biome
+            biome
+            postgresql_17_jit
             customClaude.claude
             jdk11
           ];
