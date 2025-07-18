@@ -284,7 +284,7 @@
           programs.zsh = {
             enable = true;
             shellAliases = {
-              switch = "darwin-rebuild switch --flake ~/.config/nix";
+              switch = "sudo darwin-rebuild switch --flake ~/.config/nix";
               gap = "git add -p";
               gcm = "git commit -m";
               gst = "git status";

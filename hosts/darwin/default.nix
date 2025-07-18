@@ -13,6 +13,11 @@ in
     ../../dock
   ];
 
+  # Nix configuration
+  nix.settings = {
+    download-buffer-size = 268435456; # 256MB (default is 64MB)
+  };
+
   local = {
     dock.enable = true;
     dock.entries = [
