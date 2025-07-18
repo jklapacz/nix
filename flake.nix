@@ -171,10 +171,12 @@
         in
         {
           imports = [
-            ./modules/cursor.nix
+            ./modules/cursor
           ];
 
-          programs.cursor = {
+          programs.cursor = let
+            cursorSettings = import ./modules/cursor/settings.nix { inherit pkgs user; };
+          in {
             enable = true;
             package =
               if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then
@@ -182,77 +184,7 @@
               else
                 "/usr/local/bin/cursor";
 
-            extensions = with pkgs.vscode-marketplace; [
-              alefragnani.project-manager
-              asvetliakov.vscode-neovim
-              charliermarsh.ruff
-              eamodio.gitlens
-              golang.go
-              jnoortheen.nix-ide
-              mkhl.direnv
-              ms-python.debugpy
-              ms-python.python
-              ms-python.vscode-pylance
-              textualize.textual-syntax-highlighter
-              editorconfig.editorconfig
-              denoland.vscode-deno
-            ];
-
-            settings = {
-              "workbench.colorTheme" = "Monokai";
-              "editor.fontFamily" =
-                "'Hack Nerd Font', 'FiraCode Nerd Font', '0xProto Nerd Font', Menlo, Monaco, 'Courier New', monospace";
-              "editor.fontSize" = 14;
-              "editor.lineNumbers" = "relative";
-              "extensions.verifySignature" = false;
-              "extensions.experimental.affinity" = {
-                "asvetliakov.vscode-neovim" = 1;
-              };
-              "projectManager.git.baseFolders" = [
-                "/Users/${user}/dev"
-                "/Users/${user}/.config"
-              ];
-              "window.commandCenter" = 1;
-
-              "files.insertFinalNewline" = true;
-              "editor.formatOnSave" = true;
-
-              "editor.codeActionsOnSave" = {
-                "source.fixAll.biome" = "always";
-                "source.organizeImports.biome" = "always";
-              };
-
-              "[json]" = {
-                "editor.defaultFormatter" = "biomejs.biome";
-              };
-              "[jsonc]" = {
-                "editor.defaultFormatter" = "biomejs.biome";
-              };
-              "[javascript]" = {
-                "editor.defaultFormatter" = "biomejs.biome";
-                "source.organizeImports.biome" = "explicit";
-              };
-              "[typescript]" = {
-                "editor.defaultFormatter" = "biomejs.biome";
-                "source.organizeImports.biome" = "explicit";
-              };
-              "[javascriptreact]" = {
-                "editor.defaultFormatter" = "biomejs.biome";
-                "source.organizeImports.biome" = "explicit";
-              };
-              "[typescriptreact]" = {
-                "editor.defaultFormatter" = "biomejs.biome";
-                "source.organizeImports.biome" = "explicit";
-              };
-              "[python]" = {
-                "editor.defaultFormatter" = "charliermarsh.ruff";
-                "editor.formatOnSave" = true;
-                "editor.codeActionsOnSave" = {
-                  "source.fixAll.ruff" = "explicit";
-                  "source.organizeImports.ruff" = "explicit";
-                };
-              };
-            };
+            inherit (cursorSettings) extensions settings;
           };
 
           home.stateVersion = "23.05";
