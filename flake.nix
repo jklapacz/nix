@@ -206,7 +206,7 @@
             biome
             postgresql_17_jit
             customClaude.claude
-            jdk11
+            nodejs_24
           ];
 
           home.sessionVariables = {
