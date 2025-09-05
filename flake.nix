@@ -109,7 +109,7 @@
             with pkgs;
             [
               nixfmt-rfc-style
-              neofetch
+              fastfetch
               neovim
               dockutil
             ]
@@ -143,7 +143,8 @@
               "slack"
               "visual-studio-code"
               "postman"
-            ] ++ (if !isVM then [ "docker" ] else [ ]);
+            ]
+            ++ (if !isVM then [ "docker" ] else [ ]);
             onActivation = {
               cleanup = "zap";
               autoUpdate = true;
@@ -326,81 +327,83 @@
           );
 
           # Create a Git configuration template
-          home.file =
-            {
-              ".ssh/config".text =
-                if isWork then
-                  ''
-                    # Default GitHub account (work)
-                    Host github.com
-                      HostName github.com
-                      User git
-                      IdentityFile ~/.ssh/id_ed25519_work
-
-                    # Personal GitHub account
-                    Host github-personal
-                      HostName github.com
-                      User git
-                      IdentityFile ~/.ssh/id_ed25519_personal
-
-                    Host legacy-laptop-local
-                      HostName 192.168.1.108
-                      User gordian
-                      IdentityFile ~/.ssh/id_ed25519_work
-                  ''
-                else
-                  ''
-                    # Personal GitHub account
-                    Host github.com
-                      HostName github.com
-                      User git
-                      IdentityFile ~/.ssh/id_ed25519_personal
-                    Host cortex
-                      HostName cortex.local
-                      User root
-                  '';
-
-              ".gitconfig".text =
-                if isWork then
-                  ''
-                    [user]
-                      name = Jakub Klapacz
-                      email = ${workEmail}
-
-                      [includeIf "gitdir:~/.config/nix/"]
-                        path = ~/.gitconfig-personal
-
-                      [includeIf "gitdir:~/dev/novnc-fork/"]
-                        path = ~/.gitconfig-personal
-
-                      [includeIf "gitdir:~/dev/terraform-provider-postgresql/"]
-                        path = ~/.gitconfig-personal
-
-                      [includeIf "gitdir:~/dev/cua/"]
-                        path = ~/.gitconfig-personal
-
-                      [includeIf "gitdir:~/dev/devenv-templates/"]
-                        path = ~/.gitconfig-personal
-                  ''
-                else
-                  ''
-                    [user]
-                      name = Jakub Klapacz
-                      email = ${personalEmail}
-                  '';
-            }
-            // (
+          home.file = {
+            ".ssh/config".text =
               if isWork then
-                {
-                  ".gitconfig-personal".text = ''
-                    [user]
-                      name = Jakub Klapacz
-                      email = ${personalEmail}
-                  '';
-                }
+                ''
+                  # Default GitHub account (work)
+                  Host github.com
+                    HostName github.com
+                    User git
+                    IdentityFile ~/.ssh/id_ed25519_work
+
+                  # Personal GitHub account
+                  Host github-personal
+                    HostName github.com
+                    User git
+                    IdentityFile ~/.ssh/id_ed25519_personal
+
+                  Host legacy-laptop-local
+                    HostName 192.168.1.108
+                    User gordian
+                    IdentityFile ~/.ssh/id_ed25519_work
+                ''
               else
-                { }
-            );
+                ''
+                  # Personal GitHub account
+                  Host github.com
+                    HostName github.com
+                    User git
+                    IdentityFile ~/.ssh/id_ed25519_personal
+                  Host cortex
+                    HostName cortex.local
+                    User root
+                '';
+
+            ".gitconfig".text =
+              if isWork then
+                ''
+                  [user]
+                    name = Jakub Klapacz
+                    email = ${workEmail}
+
+                    [includeIf "gitdir:~/.config/nix/"]
+                      path = ~/.gitconfig-personal
+
+                    [includeIf "gitdir:~/dev/novnc-fork/"]
+                      path = ~/.gitconfig-personal
+
+                    [includeIf "gitdir:~/dev/terraform-provider-postgresql/"]
+                      path = ~/.gitconfig-personal
+
+                    [includeIf "gitdir:~/dev/cua/"]
+                      path = ~/.gitconfig-personal
+
+                    [includeIf "gitdir:~/dev/devenv-templates/"]
+                      path = ~/.gitconfig-personal
+
+                    [includeIf "gitdir:~/dev/bootstrap/"]
+                      path = ~/.gitconfig-personal
+                ''
+              else
+                ''
+                  [user]
+                    name = Jakub Klapacz
+                    email = ${personalEmail}
+                '';
+          }
+          // (
+            if isWork then
+              {
+                ".gitconfig-personal".text = ''
+                  [user]
+                    name = Jakub Klapacz
+                    email = ${personalEmail}
+                '';
+              }
+            else
+              { }
+          );
         };
       mkHomeConfig = hostname: { pkgs, lib, ... }: baseHomeConfig { inherit pkgs lib hostname; };
     in
