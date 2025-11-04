@@ -1,4 +1,10 @@
-{ config, lib, pkgs, osConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig,
+  ...
+}:
 
 let
   hostname = osConfig.networking.hostName or "";
@@ -57,6 +63,9 @@ in
 
             [includeIf "gitdir:~/dev/bootstrap/"]
               path = ~/.gitconfig-personal
+
+            [includeIf "gitdir:~/dev/window-manager/"]
+              path = ~/.gitconfig-personal
         ''
       else
         ''
@@ -64,7 +73,8 @@ in
             name = Jakub Klapacz
             email = ${personalEmail}
         '';
-  } // lib.optionalAttrs isWork {
+  }
+  // lib.optionalAttrs isWork {
     ".gitconfig-personal".text = ''
       [user]
         name = Jakub Klapacz

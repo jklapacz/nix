@@ -1,4 +1,10 @@
-{ config, lib, pkgs, osConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig,
+  ...
+}:
 
 let
   hostname = osConfig.networking.hostName or "";
@@ -27,7 +33,7 @@ in
   );
 
   home.file.".ssh/config".text =
-    if isWork then
+    if true then
       ''
         # Default GitHub account (work)
         Host github.com

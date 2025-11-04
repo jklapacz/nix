@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -14,7 +19,7 @@
     rsync
     biome
     postgresql_17_jit
-    customClaude.claude
+    claude-code
     nodejs_24
     python312
     python312Packages.pip
