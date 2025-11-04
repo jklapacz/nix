@@ -16,6 +16,7 @@
     ];
     brews = [
       "lume"
+      "helix"
     ];
     casks = [
       "arc"

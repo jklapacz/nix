@@ -16,6 +16,7 @@
     terraform
     uv
     wezterm
+    ripgrep
     rsync
     biome
     postgresql_17_jit
