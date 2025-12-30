@@ -8,7 +8,7 @@
 
 let
   hostname = osConfig.networking.hostName or "";
-  isWork = hostname == "Shadowfax";
+  isWork = true;
   personalEmail = "kubaklapacz@gmail.com";
   workEmail = "jakub@gordiansoftware.com";
 in
@@ -65,6 +65,15 @@ in
               path = ~/.gitconfig-personal
 
             [includeIf "gitdir:~/dev/window-manager/"]
+              path = ~/.gitconfig-personal
+
+            [includeIf "gitdir:~/dev/aol/"]
+              path = ~/.gitconfig-personal
+
+            [includeIf "gitdir:~/dev/rusty/"]
+              path = ~/.gitconfig-personal
+
+            [includeIf "gitdir:~/dev/prexler/"]
               path = ~/.gitconfig-personal
         ''
       else
