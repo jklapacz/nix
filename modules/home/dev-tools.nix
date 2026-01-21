@@ -1,0 +1,32 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+{
+  home.packages = with pkgs; [
+    awscli2
+    biome
+    claude-code
+    codex
+    devenv
+    gh
+    git-lfs
+    nil
+    nix-direnv
+    nodejs_24
+    openssh
+    postgresql_17_jit
+    python312
+    python312Packages.pip
+    python312Packages.tiktoken
+    ripgrep
+    rsync
+    ssm-session-manager-plugin
+    terraform
+    uv
+    wezterm
+  ];
+}
