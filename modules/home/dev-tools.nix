@@ -15,6 +15,7 @@
     gh
     git-lfs
     nil
+    nixd
     nix-direnv
     nodejs_24
     openssh
