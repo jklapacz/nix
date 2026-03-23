@@ -25,6 +25,7 @@ in
       { path = "/Applications/Google Chrome.app"; }
       { path = "/Applications/Safari.app"; }
       { path = "${pkgs.wezterm}/Applications/WezTerm.app"; }
+      { path = "/Applications/Ghostty.app"; }
       { path = "/Applications/Cursor.app"; }
       { path = "/Applications/Visual Studio Code.app"; }
       { path = "/Applications/Claude.app"; }

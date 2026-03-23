@@ -31,11 +31,8 @@
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
-    lume = {
-      url = "github:trycua/lume";
-      flake = false;
-    };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    devenv.url = "github:cachix/devenv";
   };
 
   outputs =
@@ -50,6 +47,7 @@
       nixpkgs,
       mac-app-util,
       nix-vscode-extensions,
+      devenv,
       ...
     }:
     let
@@ -75,6 +73,9 @@
           '';
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
+            (final: prev: {
+              devenv = devenv.packages.${final.system}.devenv;
+            })
             (final: prev: {
               customClaude = import ./modules/claude {
                 pkgs = final;

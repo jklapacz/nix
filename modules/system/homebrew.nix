@@ -12,24 +12,24 @@
       "homebrew/homebrew-core"
       "homebrew/homebrew-cask"
       "homebrew/homebrew-bundle"
-      "trycua/lume"
     ];
     brews = [
-      "lume"
       "helix"
     ];
     casks = [
+      "android-studio"
       "arc"
       "caffeine"
       "cursor"
       "claude"
       "deskpad"
-      "docker"
+      "docker-desktop"
       "firefox"
       "google-chrome"
       "moom"
       "slack"
       "visual-studio-code"
+      "ghostty"
       "postman"
     ];
     onActivation = {
