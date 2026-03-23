@@ -33,7 +33,7 @@ in
   );
 
   home.file.".ssh/config".text =
-    if true then
+    if isWork then
       ''
         # Default GitHub account (work)
         Host github.com

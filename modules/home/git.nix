@@ -8,7 +8,7 @@
 
 let
   hostname = osConfig.networking.hostName or "";
-  isWork = true;
+  isWork = hostname == "Shadowfax";
   personalEmail = "kubaklapacz@gmail.com";
   workEmail = "jakub@gordiansoftware.com";
 in

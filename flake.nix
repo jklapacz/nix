@@ -149,6 +149,7 @@
           home-manager.darwinModules.home-manager
           nix-homebrew.darwinModules.nix-homebrew
           {
+            networking.hostName = "Shadowfax";
             nix = {
               enable = false;
             };
@@ -182,6 +183,7 @@
           home-manager.darwinModules.home-manager
           nix-homebrew.darwinModules.nix-homebrew
           {
+            networking.hostName = "Anduril";
             nix = {
               enable = false;
             };
