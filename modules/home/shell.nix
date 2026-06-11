@@ -16,7 +16,7 @@
       gsw = "git switch";
       aws-login = "aws sso login --sso-session gordian-aws && aws sso login --profile gordian-infra-orchestration-tfstate-access";
     };
-    initExtra = ''
+    initContent = ''
       export PYTHONDONTWRITEBYTECODE=1
       if [ -f "$HOME/.secrets" ]; then
         source "$HOME/.secrets"

@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    nixfmt-rfc-style
+    nixfmt
     fastfetch
     neovim
     dockutil

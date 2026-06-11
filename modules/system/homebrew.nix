@@ -32,7 +32,7 @@
       "visual-studio-code"
       "ghostty"
       "postman"
-      "wireshark"
+      "wireshark-app"
     ];
     onActivation = {
       cleanup = "zap";

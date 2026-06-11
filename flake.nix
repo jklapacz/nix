@@ -74,7 +74,7 @@
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
             (final: prev: {
-              devenv = devenv.packages.${final.system}.devenv;
+              devenv = devenv.packages.${final.stdenv.hostPlatform.system}.devenv;
             })
             (final: prev: {
               customClaude = import ./modules/claude {

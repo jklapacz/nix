@@ -15,24 +15,26 @@ in
 {
   programs.git = {
     enable = true;
-    userName = "Jakub Klapacz";
-    userEmail = if isWork then workEmail else personalEmail;
     ignores = [ ".DS_STORE" ];
-    aliases = {
-      # Short, pretty log with graph and refs
-      lg = ''
-        log --graph \
-          --pretty=format:'%C(yellow)%h%Creset -%C(green)%aN%Creset - %C(blue)%ar%Creset %C(auto)%d %Creset%s'
-      '';
+    settings = {
+      user = {
+        name = "Jakub Klapacz";
+        email = if isWork then workEmail else personalEmail;
+      };
+      alias = {
+        # Short, pretty log with graph and refs
+        lg = ''
+          log --graph \
+            --pretty=format:'%C(yellow)%h%Creset -%C(green)%aN%Creset - %C(blue)%ar%Creset %C(auto)%d %Creset%s'
+        '';
 
-      lga = "log --graph --all --decorate --oneline";
+        lga = "log --graph --all --decorate --oneline";
 
-      # Detailed log with date, commit message, and stats
-      lgd = ''
-        log --pretty=format:'%C(yellow)%h %Creset| %C(green)%an %Creset| %C(blue)%ar %Creset| %s' --stat
-      '';
-    };
-    extraConfig = {
+        # Detailed log with date, commit message, and stats
+        lgd = ''
+          log --pretty=format:'%C(yellow)%h %Creset| %C(green)%an %Creset| %C(blue)%ar %Creset| %s' --stat
+        '';
+      };
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
     };
