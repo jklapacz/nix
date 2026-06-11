@@ -28,6 +28,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-cirruslabs = {
+      url = "github:cirruslabs/homebrew-cli";
+      flake = false;
+    };
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
@@ -43,6 +47,7 @@
       homebrew-bundle,
       homebrew-core,
       homebrew-cask,
+      homebrew-cirruslabs,
       home-manager,
       nixpkgs,
       mac-app-util,
@@ -151,6 +156,7 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
+                "cirruslabs/homebrew-cli" = homebrew-cirruslabs;
               };
               mutableTaps = true;
               autoMigrate = false;
@@ -185,6 +191,7 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
+                "cirruslabs/homebrew-cli" = homebrew-cirruslabs;
               };
               mutableTaps = true;
               autoMigrate = false;

@@ -12,11 +12,13 @@
       "homebrew/homebrew-core"
       "homebrew/homebrew-cask"
       "homebrew/homebrew-bundle"
+      "cirruslabs/cli"
     ];
     brews = [
       "helix"
       "ipatool"
       "beads"
+      "cirruslabs/cli/tart"
     ];
     casks = [
       "android-studio"
