@@ -26,7 +26,6 @@ in
       { path = "/Applications/Safari.app"; }
       { path = "${pkgs.wezterm}/Applications/WezTerm.app"; }
       { path = "/Applications/Ghostty.app"; }
-      { path = "/Applications/Cursor.app"; }
       { path = "/Applications/Visual Studio Code.app"; }
       { path = "/Applications/Claude.app"; }
     ];
@@ -34,9 +33,6 @@ in
 
   system.defaults = {
     CustomUserPreferences = {
-      "com.cursor.app" = {
-        ApplePressAndHoldEnabled = false;
-      };
       # "com.apple.Safari" = {
       #   IncludeDevelopMenu = true;
       #   WebKitDeveloperExtrasEnabledPreferenceKey = true;

@@ -15,12 +15,13 @@
     ];
     brews = [
       "helix"
+      "ipatool"
+      "beads"
     ];
     casks = [
       "android-studio"
       "arc"
       "caffeine"
-      "cursor"
       "claude"
       "deskpad"
       "docker-desktop"
@@ -31,6 +32,7 @@
       "visual-studio-code"
       "ghostty"
       "postman"
+      "wireshark"
     ];
     onActivation = {
       cleanup = "zap";

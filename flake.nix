@@ -113,27 +113,11 @@
         }:
         {
           imports = [
-            ./modules/cursor
             ./modules/home/shell.nix
             ./modules/home/dev-tools.nix
             ./modules/home/git.nix
             ./modules/home/ssh.nix
           ];
-
-          programs.cursor =
-            let
-              cursorSettings = import ./modules/cursor/settings.nix { inherit pkgs user; };
-            in
-            {
-              enable = true;
-              package =
-                if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then
-                  "/opt/homebrew/bin/cursor"
-                else
-                  "/usr/local/bin/cursor";
-
-              inherit (cursorSettings) extensions settings;
-            };
 
           home.stateVersion = "23.05";
           # Let home-manager install and manage itself.
