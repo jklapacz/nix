@@ -24,7 +24,7 @@
       "caffeine"
       "claude"
       "deskpad"
-      "docker-desktop"
+      "orbstack"
       "firefox"
       "google-chrome"
       "moom"
