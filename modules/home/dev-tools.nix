@@ -7,6 +7,7 @@
 
 {
   home.packages = with pkgs; [
+    ansible
     awscli2
     biome
     claude-code
@@ -18,6 +19,7 @@
     nixd
     nix-direnv
     nodejs_24
+    opencode
     openssh
     postgresql_17_jit
     python312

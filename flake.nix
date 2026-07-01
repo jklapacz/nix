@@ -37,6 +37,7 @@
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     devenv.url = "github:cachix/devenv";
+    opencode.url = "github:anomalyco/opencode";
   };
 
   outputs =
@@ -53,6 +54,7 @@
       mac-app-util,
       nix-vscode-extensions,
       devenv,
+      opencode,
       ...
     }:
     let
@@ -80,6 +82,9 @@
             nix-vscode-extensions.overlays.default
             (final: prev: {
               devenv = devenv.packages.${final.stdenv.hostPlatform.system}.devenv;
+            })
+            (final: prev: {
+              opencode = opencode.packages.${final.stdenv.hostPlatform.system}.opencode;
             })
             (final: prev: {
               customClaude = import ./modules/claude {
