@@ -91,12 +91,6 @@
             (final: prev: {
               herdr = herdr.packages.${final.stdenv.hostPlatform.system}.herdr;
             })
-            (final: prev: {
-              customClaude = import ./modules/claude {
-                pkgs = final;
-                lib = final.lib;
-              };
-            })
           ];
           nixpkgs.config.allowUnfree = true;
 
