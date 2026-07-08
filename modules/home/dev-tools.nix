@@ -22,6 +22,7 @@
     nodejs_24
     opencode
     openssh
+    pi-coding-agent
     postgresql_17_jit
     python312
     python312Packages.pip
