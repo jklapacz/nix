@@ -15,6 +15,7 @@
     devenv
     gh
     git-lfs
+    herdr
     nil
     nixd
     nix-direnv

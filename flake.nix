@@ -38,6 +38,7 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     devenv.url = "github:cachix/devenv";
     opencode.url = "github:anomalyco/opencode";
+    herdr.url = "github:ogulcancelik/herdr/v0.7.3";
   };
 
   outputs =
@@ -55,6 +56,7 @@
       nix-vscode-extensions,
       devenv,
       opencode,
+      herdr,
       ...
     }:
     let
@@ -85,6 +87,9 @@
             })
             (final: prev: {
               opencode = opencode.packages.${final.stdenv.hostPlatform.system}.opencode;
+            })
+            (final: prev: {
+              herdr = herdr.packages.${final.stdenv.hostPlatform.system}.herdr;
             })
             (final: prev: {
               customClaude = import ./modules/claude {
