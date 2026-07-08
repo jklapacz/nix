@@ -2,8 +2,9 @@
   description = "Shadowfax system configuration";
 
   inputs = {
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/master";
+    # Track the unstable channel (Hydra-tested + binary-cached) rather than
+    # raw master, which forces local source builds and can be broken.
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
