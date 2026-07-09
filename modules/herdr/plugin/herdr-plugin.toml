@@ -1,0 +1,10 @@
+id = "jklapacz.worktree-hook"
+name = "Worktree Hook"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Run a script whenever a worktree is created"
+platforms = ["macos"]
+
+[[events]]
+on = "worktree.created"
+command = ["bash", "on-worktree-created.sh"]
