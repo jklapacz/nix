@@ -127,6 +127,7 @@
             ./modules/home/dev-tools.nix
             ./modules/home/git.nix
             ./modules/home/ssh.nix
+            ./modules/home/herdr.nix
           ];
 
           home.stateVersion = "23.05";
