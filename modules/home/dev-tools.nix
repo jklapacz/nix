@@ -34,4 +34,10 @@
     uv
     wezterm
   ];
+
+  # Installs the JDK and sets JAVA_HOME
+  programs.java = {
+    enable = true;
+    package = pkgs.openjdk21;
+  };
 }
