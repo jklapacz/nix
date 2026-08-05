@@ -132,6 +132,7 @@
             ./modules/home/git.nix
             ./modules/home/ssh.nix
             ./modules/home/herdr.nix
+            ./modules/home/pi-extensions.nix
           ];
 
           home.stateVersion = "23.05";
