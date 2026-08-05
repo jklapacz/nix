@@ -39,7 +39,7 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     devenv.url = "github:cachix/devenv";
     opencode.url = "github:anomalyco/opencode";
-    herdr.url = "github:ogulcancelik/herdr/v0.7.3";
+    herdr.url = "github:ogulcancelik/herdr/v0.8.0";
   };
 
   outputs =
