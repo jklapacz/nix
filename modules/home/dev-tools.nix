@@ -14,6 +14,7 @@
     codex
     devenv
     gh
+    ghidra-with-mcp
     git-lfs
     herdr
     nil

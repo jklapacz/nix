@@ -92,6 +92,10 @@
             (final: prev: {
               herdr = herdr.packages.${final.stdenv.hostPlatform.system}.herdr;
             })
+            (final: prev: {
+              ghidra-mcp-extension = final.callPackage ./modules/ghidra-mcp/package.nix { };
+              ghidra-with-mcp = final.ghidra.withExtensions (_: [ final.ghidra-mcp-extension ]);
+            })
           ];
           nixpkgs.config.allowUnfree = true;
 
