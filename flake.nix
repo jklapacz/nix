@@ -37,9 +37,10 @@
       url = "github:hraban/mac-app-util";
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    devenv.url = "github:cachix/devenv";
+    devenv.url = "github:cachix/devenv/v2.2.1";
     opencode.url = "github:anomalyco/opencode";
     herdr.url = "github:ogulcancelik/herdr/v0.8.0";
+    bootstrap.url = "github:jklapacz/bootstrap";
   };
 
   outputs =
@@ -58,6 +59,7 @@
       devenv,
       opencode,
       herdr,
+      bootstrap,
       ...
     }:
     let
@@ -91,6 +93,9 @@
             })
             (final: prev: {
               herdr = herdr.packages.${final.stdenv.hostPlatform.system}.herdr;
+            })
+            (final: prev: {
+              bootstrap = bootstrap.packages.${final.stdenv.hostPlatform.system}.bootstrap;
             })
             (final: prev: {
               ghidra-mcp-extension = final.callPackage ./modules/ghidra-mcp/package.nix { };

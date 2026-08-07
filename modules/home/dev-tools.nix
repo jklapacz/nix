@@ -9,6 +9,7 @@
   home.packages = with pkgs; [
     ansible
     awscli2
+    bootstrap
     biome
     claude-code
     codex
