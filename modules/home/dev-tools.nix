@@ -32,6 +32,7 @@
     ripgrep
     rsync
     ssm-session-manager-plugin
+    tart
     terraform
     uv
     wezterm
