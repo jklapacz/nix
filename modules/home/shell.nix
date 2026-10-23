@@ -4,6 +4,7 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     PYTHONDONTWRITEBYTECODE = 1;
+    HOMEBREW_NO_REQUIRE_TAP_TRUST = 1;
   };
 
   programs.zsh = {
@@ -15,6 +16,10 @@
       gst = "git status";
       gsw = "git switch";
       aws-login = "aws sso login --sso-session gordian-aws && aws sso login --profile gordian-infra-orchestration-tfstate-access";
+
+      # Local LLM (llama.cpp via homebrew)
+      llama-serve = "llama-server -m $HOME/models/Qwen3.5-9B-abliterated-F16.gguf --host 127.0.0.1 --port 8080 -c 8192";
+      llama-chat = "llama-cli -m $HOME/models/Qwen3.5-9B-abliterated-F16.gguf";
     };
     initContent = ''
       export PYTHONDONTWRITEBYTECODE=1
