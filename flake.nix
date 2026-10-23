@@ -96,6 +96,9 @@
               ghidra-mcp-extension = final.callPackage ./modules/ghidra-mcp/package.nix { };
               ghidra-with-mcp = final.ghidra.withExtensions (_: [ final.ghidra-mcp-extension ]);
             })
+            (final: prev: {
+              rea-agents = final.callPackage ./modules/rea/package.nix { };
+            })
           ];
           nixpkgs.config.allowUnfree = true;
 

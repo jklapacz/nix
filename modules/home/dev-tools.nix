@@ -29,6 +29,7 @@
     python312
     python312Packages.pip
     python312Packages.tiktoken
+    rea-agents
     ripgrep
     rsync
     ssm-session-manager-plugin
