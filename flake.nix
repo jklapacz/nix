@@ -35,7 +35,6 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     devenv.url = "github:cachix/devenv/v2.2.1";
     opencode.url = "github:anomalyco/opencode";
-    herdr.url = "github:ogulcancelik/herdr/v0.8.0";
     bootstrap.url = "github:jklapacz/bootstrap";
   };
 
@@ -53,7 +52,6 @@
       nix-vscode-extensions,
       devenv,
       opencode,
-      herdr,
       bootstrap,
       ...
     }:
@@ -85,9 +83,6 @@
             })
             (final: prev: {
               opencode = opencode.packages.${final.stdenv.hostPlatform.system}.opencode;
-            })
-            (final: prev: {
-              herdr = herdr.packages.${final.stdenv.hostPlatform.system}.herdr;
             })
             (final: prev: {
               bootstrap = bootstrap.packages.${final.stdenv.hostPlatform.system}.bootstrap;
