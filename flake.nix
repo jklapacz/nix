@@ -29,6 +29,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-dbdelve = {
+      url = "github:ShayanAbbas1/homebrew-dbdelve";
+      flake = false;
+    };
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
@@ -46,6 +50,7 @@
       homebrew-bundle,
       homebrew-core,
       homebrew-cask,
+      homebrew-dbdelve,
       home-manager,
       nixpkgs,
       mac-app-util,
@@ -165,6 +170,7 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
+                "shayanabbas1/homebrew-dbdelve" = homebrew-dbdelve;
               };
               mutableTaps = true;
               autoMigrate = false;
@@ -199,6 +205,7 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
+                "shayanabbas1/homebrew-dbdelve" = homebrew-dbdelve;
               };
               mutableTaps = true;
               autoMigrate = false;

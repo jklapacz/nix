@@ -12,6 +12,7 @@
       "homebrew/homebrew-core"
       "homebrew/homebrew-cask"
       "homebrew/homebrew-bundle"
+      "shayanabbas1/dbdelve"
     ];
     brews = [
       "helix"
@@ -23,6 +24,7 @@
       "android-studio"
       "arc"
       "caffeine"
+      "shayanabbas1/dbdelve/dbdelve"
       "claude"
       "deskpad"
       "orbstack"
@@ -41,4 +43,12 @@
       upgrade = true;
     };
   };
+
+  # Runs after the homebrew activation step. Strips Gatekeeper quarantine from
+  # casks that aren't notarized (Homebrew no longer supports --no-quarantine).
+  system.activationScripts.postActivation.text = ''
+    if [ -d "/Applications/DBDelve.app" ]; then
+      /usr/bin/xattr -dr com.apple.quarantine "/Applications/DBDelve.app" 2>/dev/null || true
+    fi
+  '';
 }
